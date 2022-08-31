@@ -12,8 +12,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(data);
+    data = data.isNotEmpty
+        ? data
+        : ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    // print(data);
 
     //set background
     String bgimage = data['isDaytime'] ? 'day.jpg' : 'night.jpg';
@@ -24,7 +26,7 @@ class _HomeState extends State<Home> {
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: AssetImage('asset/$bgimage'),
+            image: AssetImage('assets/$bgimage'),
             fit: BoxFit.cover,
           )),
           child: Padding(
@@ -32,8 +34,17 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/location');
+                  onPressed: () async {
+                    dynamic result =
+                        await Navigator.pushNamed(context, '/location');
+                    setState(() {
+                      data = {
+                        'time': result['time'],
+                        'location': result['location'],
+                        'isDaytime': result['isDaytime'],
+                        'flag': result['flag'],
+                      };
+                    });
                   },
                   icon: Icon(
                     Icons.edit_location,

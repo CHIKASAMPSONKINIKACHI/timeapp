@@ -8,6 +8,7 @@ class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoadingState createState() => _LoadingState();
 }
 
@@ -18,6 +19,7 @@ class _LoadingState extends State<Loading> {
     WorldTime instance =
         WorldTime(location: 'Africa', flag: 'Nigeria.png', url: 'Africa/Lagos');
     await instance.getTime();
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/home', arguments: {
       'location': instance.location,
       'flag': instance.flag,
